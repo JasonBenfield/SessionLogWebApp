@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="XTI_WebApp.Extensions" Version="1.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Internal\SessionLogWebApp.ApiControllers\SessionLogWebApp.ApiControllers.csproj" />
+    <ProjectReference Include="..\..\Internal\SessionLogWebApp.Api\SessionLogWebApp.Api.csproj" />
+  </ItemGroup>
+
+</Project>
