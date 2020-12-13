@@ -40,6 +40,14 @@ function SessionLog-New-XtiVersion {
     $script:sessionLogConfig | New-XtiVersion @PsBoundParameters
 }
 
+function SessionLog-Xti-Merge {
+    param(
+        [Parameter(Position=0)]
+        [string] $CommitMessage
+    )
+    $script:sessionLogConfig | Xti-Merge @PsBoundParameters
+}
+
 function SessionLog-New-XtiPullRequest {
     param(
         [Parameter(Position=0)]
@@ -72,7 +80,8 @@ function Xti-CopyAuthenticator {
 function SessionLog-Publish {
     param(
         [ValidateSet("Production", “Development", "Staging", "Test")]
-        [string] $EnvName="Production"
+        [string] $EnvName="Production",
+        [switch] $ExcludePackage
     )
     
     $ErrorActionPreference = "Stop"
@@ -133,10 +142,12 @@ function SessionLog-Publish {
 
     if($EnvName -eq "Production") {
         SessionLog-GenerateApi -DisableControllers
-        $script:sessionLogConfig | Xti-PublishPackage -DisableUpdateVersion -Prod
+        if(-not $ExcludePackage) {
+            $script:sessionLogConfig | Xti-PublishPackage -DisableUpdateVersion -Prod
+        }
         Xti-EndPublish -BranchName $branch
     }
-    else {
+    elseif(-not $ExcludePackage) {
         $script:sessionLogConfig | Xti-PublishPackage -DisableUpdateVersion
     }
 }

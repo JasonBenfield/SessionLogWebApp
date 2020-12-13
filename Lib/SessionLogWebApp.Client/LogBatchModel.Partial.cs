@@ -7,17 +7,23 @@ namespace SessionLogWebApp.Client
     {
         public LogBatchModel(ILogBatchModel source)
         {
-            StartSessions = source.StartSessions?.Cast<StartSessionModel>().ToArray()
+            StartSessions = source.StartSessions
+                ?.Select(session => new StartSessionModel(session)).ToArray()
                 ?? new StartSessionModel[] { };
-            AuthenticateSessions = source.AuthenticateSessions?.Cast<AuthenticateSessionModel>().ToArray()
+            AuthenticateSessions = source.AuthenticateSessions
+                ?.Select(session => new AuthenticateSessionModel(session)).ToArray()
                 ?? new AuthenticateSessionModel[] { };
-            StartRequests = source.StartRequests?.Cast<StartRequestModel>().ToArray()
+            StartRequests = source.StartRequests
+                ?.Select(request => new StartRequestModel(request)).ToArray()
                 ?? new StartRequestModel[] { };
-            LogEvents = source.LogEvents?.Cast<LogEventModel>().ToArray()
+            LogEvents = source.LogEvents
+                ?.Select(evt => new LogEventModel(evt)).ToArray()
                 ?? new LogEventModel[] { };
-            EndRequests = source.EndRequests?.Cast<EndRequestModel>().ToArray()
+            EndRequests = source.EndRequests
+                ?.Select(request => new EndRequestModel(request)).ToArray()
                 ?? new EndRequestModel[] { };
-            EndSessions = source.EndSessions?.Cast<EndSessionModel>().ToArray()
+            EndSessions = source.EndSessions
+                ?.Select(session => new EndSessionModel(session)).ToArray()
                 ?? new EndSessionModel[] { };
         }
 
