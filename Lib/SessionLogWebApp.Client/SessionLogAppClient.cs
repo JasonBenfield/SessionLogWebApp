@@ -12,7 +12,7 @@ namespace SessionLogWebApp.Client
             PermanentLog = new PermanentLogGroup(httpClientFactory, xtiToken, url);
         }
 
-        public const string DefaultVersion = "V66";
+        public const string DefaultVersion = "V1107";
         public PermanentLogGroup PermanentLog
         {
             get;

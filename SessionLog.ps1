@@ -109,11 +109,19 @@ function SessionLog-Publish {
 	    Xti-ResetMainDb -EnvName $EnvName
     }
 
-    Write-Progress -Activity $activity -Status "Generating the api" -PercentComplete 30
-    SessionLog-GenerateApi -DisableClients
-
     Xti-CopyShared
     Xti-CopyAuthenticator
+    
+    $defaultVersion = ""
+    if($EnvName -eq "Production") {
+        $branch = Get-CurrentBranchname
+        Xti-BeginPublish -BranchName $branch
+        $releaseBranch = Parse-ReleaseBranch -BranchName $branch
+        $defaultVersion = $releaseBranch.VersionKey
+    }
+    
+    Write-Progress -Activity $activity -Status "Generating the api" -PercentComplete 30
+    SessionLog-GenerateApi -EnvName $EnvName -DefaultVersion $defaultVersion
 
     Write-Progress -Activity $activity -Status "Running web pack" -PercentComplete 40
     $script:sessionLogConfig | SessionLog-Webpack
@@ -134,14 +142,9 @@ function SessionLog-Publish {
 
     Write-Progress -Activity $activity -Status "Publishing website" -PercentComplete 80
     
-    if($EnvName -eq "Production") {
-        $branch = Get-CurrentBranchname
-        Xti-BeginPublish -BranchName $branch
-    }
     $script:sessionLogConfig | Xti-PublishWebApp -EnvName $EnvName
 
     if($EnvName -eq "Production") {
-        SessionLog-GenerateApi -DisableControllers
         if(-not $ExcludePackage) {
             $script:sessionLogConfig | Xti-PublishPackage -DisableUpdateVersion -Prod
         }
@@ -154,11 +157,11 @@ function SessionLog-Publish {
 
 function SessionLog-GenerateApi {
     param (
-        [switch] $DisableClient,
-        [switch] $DisableControllers
+        [ValidateSet("Development", "Production", "Staging", "Test")]
+        [string] $EnvName,
+        [string] $DefaultVersion
     )
-    dotnet run --project Apps/SessionLogApiGeneratorApp --envrionment Production -- --Output:TsClient:Disable $DisableClient --Output:CsClient:Disable $DisableClient --Output:CsControllers:Disable $DisableControllers
-    $env:DOTNET_ENVIRONMENT=$EnvName
+    dotnet run --project Apps/SessionLogApiGeneratorApp --envrionment $EnvName --Output:DefaultVersion "`"$DefaultVersion`""
 }
 
 function SessionLog-Setup {
