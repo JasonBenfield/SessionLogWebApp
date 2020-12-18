@@ -7,7 +7,7 @@ namespace SessionLogWebApp.Client
 {
     public sealed partial class PermanentLogGroup : AppClientGroup
     {
-        public PermanentLogGroup(IHttpClientFactory httpClientFactory, XtiToken xtiToken, string baseUrl): base(httpClientFactory, xtiToken, baseUrl, "PermanentLog")
+        public PermanentLogGroup(IHttpClientFactory httpClientFactory, IXtiToken xtiToken, string baseUrl): base(httpClientFactory, xtiToken, baseUrl, "PermanentLog")
         {
         }
 

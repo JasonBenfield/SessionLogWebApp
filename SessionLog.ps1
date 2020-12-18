@@ -149,6 +149,7 @@ function SessionLog-Publish {
             $script:sessionLogConfig | Xti-PublishPackage -DisableUpdateVersion -Prod
         }
         Xti-EndPublish -BranchName $branch
+        $script:sessionLogConfig | Xti-Merge
     }
     elseif(-not $ExcludePackage) {
         $script:sessionLogConfig | Xti-PublishPackage -DisableUpdateVersion
