@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="XTI_TempLog.Abstractions" Version="1.2.1" />
-    <PackageReference Include="XTI_WebAppClient" Version="1.6.1" />
+    <PackageReference Include="XTI_WebAppClient" Version="1.6.3" />
   </ItemGroup>
 
 </Project>
