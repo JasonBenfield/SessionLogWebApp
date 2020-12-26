@@ -23,6 +23,7 @@ namespace SessionLogSetupApp
                     services.AddAppDbContextForSqlServer(hostContext.Configuration);
                     services.AddScoped<AppFactory>();
                     services.AddSingleton<Clock, UtcClock>();
+                    services.AddSingleton<SessionLogAppApiTemplateFactory>();
                     services.AddScoped<SessionLogSetup>();
                     services.AddHostedService<HostedService>();
                 })

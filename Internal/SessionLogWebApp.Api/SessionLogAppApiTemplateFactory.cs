@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PermanentLogGroupApi;
 using System;
 using XTI_App.Api;
 
@@ -15,7 +16,8 @@ namespace SessionLogWebApp.Api
 
         public AppApiTemplate Create()
         {
-            var api = sp.GetService<AppApi>();
+            var permanentLog = sp.GetService<PermanentLog>();
+            var api = new SessionLogAppApi(new AppApiSuperUser(), permanentLog);
             return api.Template();
         }
     }

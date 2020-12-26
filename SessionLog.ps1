@@ -80,7 +80,7 @@ function Xti-CopyAuthenticator {
 function SessionLog-Publish {
     param(
         [ValidateSet("Production", “Development", "Staging", "Test")]
-        [string] $EnvName="Production",
+        [string] $EnvName="Development",
         [switch] $ExcludePackage
     )
     

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PermanentLogGroupApi;
 using SessionLogWebApp.Api;
 using SessionLogWebApp.ApiControllers;
-using XTI_App;
 using XTI_App.Api;
-using XTI_PermanentLog;
 using XTI_WebApp.Extensions;
 
 namespace SessionLogWebApp.Extensions
@@ -16,22 +15,9 @@ namespace SessionLogWebApp.Extensions
         {
             services.AddWebAppServices(configuration);
             services.AddSingleton(sp => SessionLogAppKey.AppKey);
-            services.AddScoped<SessionFactory>();
             services.AddScoped<PermanentLog>();
-            services.AddScoped(sp =>
-            {
-                var appKey = sp.GetService<AppKey>();
-                var path = sp.GetService<XtiPath>();
-                var user = sp.GetService<IAppApiUser>();
-                var permanentLog = sp.GetService<PermanentLog>();
-                return new SessionLogAppApi
-                (
-                    appKey,
-                    path.Version,
-                    user,
-                    permanentLog
-                );
-            });
+            services.AddScoped<SessionLogAppApi>();
+            services.AddScoped<AppApi>(sp => sp.GetService<SessionLogAppApi>());
             services
                 .AddMvc()
                 .AddJsonOptions(options =>

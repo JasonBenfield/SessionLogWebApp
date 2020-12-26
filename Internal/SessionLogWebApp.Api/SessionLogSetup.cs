@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using XTI_App;
+using XTI_App.Api;
 using XTI_Core;
 
 namespace SessionLogWebApp.Api
@@ -8,33 +9,25 @@ namespace SessionLogWebApp.Api
     {
         private readonly AppFactory appFactory;
         private readonly Clock clock;
+        private readonly SessionLogAppApiTemplateFactory templateFactory;
 
-        public SessionLogSetup(AppFactory appFactory, Clock clock)
+        public SessionLogSetup(AppFactory appFactory, Clock clock, SessionLogAppApiTemplateFactory templateFactory)
         {
             this.appFactory = appFactory;
             this.clock = clock;
+            this.templateFactory = templateFactory;
         }
 
         public async Task Run()
         {
-            var app = await appFactory.Apps().App(SessionLogAppKey.AppKey);
-            const string title = "Session Log";
-            if (app.Key().Equals(SessionLogAppKey.AppKey))
-            {
-                await app.SetTitle(title);
-            }
-            else
-            {
-                app = await appFactory.Apps().Add(SessionLogAppKey.AppKey, title, clock.Now());
-            }
-            var currentVersion = await app.CurrentVersion();
-            if (!currentVersion.IsCurrent())
-            {
-                currentVersion = await app.StartNewMajorVersion(clock.Now());
-                await currentVersion.Publishing();
-                await currentVersion.Published();
-            }
-            await app.SetRoles(SessionLogRoleNames.Instance.Values());
+            await new AllAppSetup(appFactory, clock).Run();
+            await new DefaultAppSetup
+            (
+                appFactory,
+                clock,
+                templateFactory.Create(),
+                "Session Log"
+            ).Run();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using XTI_App.Api;
-using XTI_PermanentLog;
 using XTI_TempLog;
 
 namespace PermanentLogGroupApi

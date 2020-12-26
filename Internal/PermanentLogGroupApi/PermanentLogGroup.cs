@@ -1,7 +1,7 @@
 ﻿using XTI_App;
 using XTI_App.Api;
-using XTI_PermanentLog;
 using XTI_TempLog;
+using XTI_WebApp.Api;
 
 namespace PermanentLogGroupApi
 {
@@ -15,17 +15,17 @@ namespace PermanentLogGroupApi
                 ModifierCategoryName.Default,
                 ResourceAccess.AllowAuthenticated(),
                 user,
-                (n, a, u) => new AppApiActionCollection(n, a, u)
+                (n, a, u) => new WebAppApiActionCollection(n, a, u)
             )
         {
-            var actions = Actions<AppApiActionCollection>();
-            LogBatch = actions.Add(nameof(LogBatch), () => new LogBatchAction(permanentLog));
-            StartSession = actions.Add(nameof(StartSession), () => new StartSessionAction(permanentLog));
-            StartRequest = actions.Add(nameof(StartRequest), () => new StartRequestAction(permanentLog));
-            EndRequest = actions.Add(nameof(EndRequest), () => new EndRequestAction(permanentLog));
-            EndSession = actions.Add(nameof(EndSession), () => new EndSessionAction(permanentLog));
-            LogEvent = actions.Add(nameof(LogEvent), () => new LogEventAction(permanentLog));
-            AuthenticateSession = actions.Add(nameof(AuthenticateSession), () => new AuthenticateSessionAction(permanentLog));
+            var actions = Actions<WebAppApiActionCollection>();
+            LogBatch = actions.AddAction(nameof(LogBatch), () => new LogBatchAction(permanentLog));
+            StartSession = actions.AddAction(nameof(StartSession), () => new StartSessionAction(permanentLog));
+            StartRequest = actions.AddAction(nameof(StartRequest), () => new StartRequestAction(permanentLog));
+            EndRequest = actions.AddAction(nameof(EndRequest), () => new EndRequestAction(permanentLog));
+            EndSession = actions.AddAction(nameof(EndSession), () => new EndSessionAction(permanentLog));
+            LogEvent = actions.AddAction(nameof(LogEvent), () => new LogEventAction(permanentLog));
+            AuthenticateSession = actions.AddAction(nameof(AuthenticateSession), () => new AuthenticateSessionAction(permanentLog));
         }
 
         public AppApiAction<LogBatchModel, EmptyActionResult> LogBatch { get; }
