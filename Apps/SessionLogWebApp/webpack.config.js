@@ -1,7 +1,7 @@
 ﻿const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const entry = {
-    user: './Scripts/Shared/User/UserPage.ts',
+    user: './Imports/Shared/User/UserPage.js',
     home: './Scripts/Internal/Home/MainPage.ts'
 };
 const exportModule = {
@@ -65,13 +65,13 @@ const exportModule = {
 const outputFilename = '[name].js';
 const resolve = {
     alias: {
-        xtistart: path.resolve(__dirname, 'Scripts/Internal/Startup.js')
+        xtistart: path.resolve(__dirname, 'Scripts/Internal/Startup.js'),
+        XtiShared: path.resolve(__dirname, 'Imports/Shared/'),
+        XtiAuthenticator: path.resolve(__dirname, 'Imports/Authenticator/')
     }
 };
 const plugins = [
     new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
         filename: '[name].css',
         chunkFilename: '[id].css',
     })

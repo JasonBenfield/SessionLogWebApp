@@ -1,11 +1,10 @@
-﻿/// <reference path="../shared/index.d.ts" />
-import { PageLoader } from '../Shared/PageLoader';
-import { AppApiEvents } from '../Shared/AppApiEvents';
-import { ConsoleLog } from '../Shared/ConsoleLog';
-import { ModalErrorComponent } from '../Shared/Error/ModalErrorComponent';
-import { AuthenticatorAppApi } from '../Authenticator/Api/AuthenticatorAppApi';
-import { AppApi } from '../Shared/AppApi';
-import { LogoutUrl } from '../Authenticator/LogoutUrl';
+﻿import { PageLoader } from 'XtiShared/PageLoader';
+import { AppApiEvents } from 'XtiShared/AppApiEvents';
+import { ConsoleLog } from 'XtiShared/ConsoleLog';
+import { ModalErrorComponent } from 'XtiShared/Error/ModalErrorComponent';
+import { AuthenticatorAppApi } from 'XtiAuthenticator/Api/AuthenticatorAppApi';
+import { AppApi } from 'XtiShared/AppApi';
+import { LogoutUrl } from 'XtiAuthenticator/LogoutUrl';
 import { container } from 'tsyringe';
 
 export function startup(pageVM: any, page: any) {
