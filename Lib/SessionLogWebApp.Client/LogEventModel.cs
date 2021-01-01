@@ -24,7 +24,7 @@ namespace SessionLogWebApp.Client
             set;
         }
 
-        public DateTime TimeOccurred
+        public DateTimeOffset TimeOccurred
         {
             get;
             set;

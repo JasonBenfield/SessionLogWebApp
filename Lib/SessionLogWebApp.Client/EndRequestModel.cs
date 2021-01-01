@@ -12,7 +12,7 @@ namespace SessionLogWebApp.Client
             set;
         }
 
-        public DateTime TimeEnded
+        public DateTimeOffset TimeEnded
         {
             get;
             set;

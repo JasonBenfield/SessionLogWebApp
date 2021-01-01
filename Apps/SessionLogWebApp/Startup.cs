@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SessionLogWebApp.Extensions;
 using XTI_WebApp.Extensions;
+using XTI_WebApp.Scheduled;
 
 namespace SessionLogWebApp
 {
@@ -21,6 +22,7 @@ namespace SessionLogWebApp
         {
             services.ConfigureXtiCookieAndTokenAuthentication(Configuration);
             services.AddSessionLogServices(Configuration);
+            services.AddScheduledWebServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

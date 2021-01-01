@@ -1,5 +1,11 @@
 // Generated code
 
+interface IUserStartRequest {
+	ReturnUrl: string;
+}
+interface IAppActionViewResult {
+	ViewName: string;
+}
 interface ILogBatchModel {
 	StartSessions: IStartSessionModel[];
 	StartRequests: IStartRequestModel[];
@@ -45,4 +51,6 @@ interface IEndSessionModel {
 	TimeEnded: Date;
 }
 interface IEmptyActionResult {
+}
+interface IEmptyRequest {
 }

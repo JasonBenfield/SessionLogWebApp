@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PermanentLogGroupApi;
 using SessionLogWebApp.Api;
 using System.Threading.Tasks;
 using XTI_ApiGeneratorApp.Extensions;
@@ -7,7 +8,6 @@ using XTI_App;
 using XTI_App.Api;
 using XTI_Configuration.Extensions;
 using XTI_Core;
-using XTI_PermanentLog;
 
 namespace SessionLogApiGeneratorApp
 {
@@ -24,20 +24,16 @@ namespace SessionLogApiGeneratorApp
                 {
                     services.AddApiGenerator(hostContext.Configuration);
                     services.AddSingleton<Clock, UtcClock>();
-                    services.AddScoped<SessionFactory>();
+                    services.AddScoped<AppFactory>();
                     services.AddScoped<PermanentLog>();
-                    services.AddScoped<AppApi>(sp =>
+                    services.AddScoped<IAppApiUser, AppApiSuperUser>();
+                    services.AddScoped<AppApiFactory, SessionLogAppApiFactory>();
+                    services.AddScoped(sp =>
                     {
-                        var permanentLog = sp.GetService<PermanentLog>();
-                        return new SessionLogAppApi
-                        (
-                            SessionLogAppKey.AppKey,
-                            AppVersionKey.Current,
-                            new AppApiSuperUser(),
-                            permanentLog
-                        );
+                        var factory = sp.GetService<AppApiFactory>();
+                        return (SessionLogAppApi)factory.CreateForSuperUser();
                     });
-                    services.AddScoped<IAppApiTemplateFactory, SessionLogAppApiTemplateFactory>();
+                    services.AddScoped<AppApi>(sp => sp.GetService<SessionLogAppApi>());
                     services.AddHostedService<ApiGeneratorHostedService>();
                 })
                 .RunConsoleAsync();

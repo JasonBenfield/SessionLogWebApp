@@ -15,6 +15,7 @@ var PermanentLogGroup = /** @class */ (function (_super) {
         _this.EndSessionAction = _this.createAction('EndSession', 'EndSession');
         _this.LogEventAction = _this.createAction('LogEvent', 'LogEvent');
         _this.AuthenticateSessionAction = _this.createAction('AuthenticateSession', 'AuthenticateSession');
+        _this.EndExpiredSessionsAction = _this.createAction('EndExpiredSessions', 'EndExpiredSessions');
         return _this;
     }
     PermanentLogGroup.prototype.LogBatch = function (model, errorOptions) {
@@ -37,6 +38,9 @@ var PermanentLogGroup = /** @class */ (function (_super) {
     };
     PermanentLogGroup.prototype.AuthenticateSession = function (model, errorOptions) {
         return this.AuthenticateSessionAction.execute(model, errorOptions || {});
+    };
+    PermanentLogGroup.prototype.EndExpiredSessions = function (errorOptions) {
+        return this.EndExpiredSessionsAction.execute({}, errorOptions || {});
     };
     return PermanentLogGroup;
 }(AppApiGroup_1.AppApiGroup));

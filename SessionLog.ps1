@@ -5,7 +5,7 @@ $script:sessionLogConfig = [PSCustomObject]@{
     RepoName = "SessionLogWebApp"
     AppName = "SessionLog"
     AppType = "WebApp"
-    ProjectDir = "C:\XTI\src\SessionLogWebApp\Apps\SessionLogWebApp"
+    ProjectDir = "Apps\SessionLogWebApp"
 }
 
 function SessionLog-New-XtiIssue {
@@ -31,9 +31,9 @@ function SessionLog-Xti-StartIssue {
 
 function SessionLog-New-XtiVersion {
     param(
-        [Parameter(Position=0)]
+        [Parameter(Mandatory, Position=0)]
         [ValidateSet("major", "minor", "patch")]
-        $VersionType = "minor",
+        $VersionType,
         [ValidateSet("Development", "Production", "Staging", "Test")]
         $EnvName = "Production"
     )
@@ -62,25 +62,10 @@ function SessionLog-Xti-PostMerge {
     $script:sessionLogConfig | Xti-PostMerge @PsBoundParameters
 }
 
-function Xti-CopyShared {
-    $source = "..\SharedWebApp\Apps\SharedWebApp"
-    $target = ".\Apps\SessionLogWebApp"
-    robocopy "$source\Scripts\Shared\" "$target\Scripts\Shared\" *.ts /e /purge /njh /njs /np /ns /nc /nfl /ndl /a+:R
-    robocopy "$source\Scripts\Shared\" "$target\Scripts\Shared\" /xf *.ts /e /purge /njh /njs /np /ns /nc /nfl /ndl /a-:R
-    robocopy "$source\Views\Exports\Shared\" "$target\Views\Exports\Shared\" /e /purge /njh /njs /np /ns /nc /nfl /ndl /a+:R
-}
-
-function Xti-CopyAuthenticator {
-    $source = "..\AuthenticatorWebApp\Apps\AuthenticatorWebApp"
-    $target = ".\Apps\SessionLogWebApp"
-    robocopy "$source\Scripts\Authenticator\" "$target\Scripts\Authenticator\" *.ts /e /purge /njh /njs /np /ns /nc /nfl /ndl /a+:R
-    robocopy "$source\Scripts\Authenticator\" "$target\Scripts\Authenticator\" /xf *.ts /e /purge /njh /njs /np /ns /nc /nfl /ndl /a-:R
-}
-
 function SessionLog-Publish {
     param(
         [ValidateSet("Production", “Development", "Staging", "Test")]
-        [string] $EnvName="Production",
+        [string] $EnvName="Development",
         [switch] $ExcludePackage
     )
     
@@ -108,9 +93,12 @@ function SessionLog-Publish {
         Write-Progress -Activity $activity -Status "Resetting the app database" -PercentComplete 20
 	    Xti-ResetMainDb -EnvName $EnvName
     }
-
-    Xti-CopyShared
-    Xti-CopyAuthenticator
+    if($EnvName -eq "Production") {
+        SessionLog-ImportWeb -Prod
+    }
+    else {
+        SessionLog-ImportWeb
+    }
     
     $defaultVersion = ""
     if($EnvName -eq "Production") {
@@ -187,4 +175,12 @@ function SessionLog-Webpack {
     Set-Location $ProjectDir
     webpack
     Set-Location $currentDir
+}
+
+function SessionLog-ImportWeb {
+    param(
+        [switch] $Prod
+    )
+    $script:sessionLogConfig | Xti-ImportWeb -Prod:$Prod -AppToImport Shared
+    $script:sessionLogConfig | Xti-ImportWeb -Prod:$Prod -AppToImport Authenticator
 }
