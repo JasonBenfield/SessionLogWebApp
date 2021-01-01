@@ -7,7 +7,7 @@ namespace PermanentLogGroupApi
 {
     public sealed class PermanentLogGroup : AppApiGroup
     {
-        public PermanentLogGroup(AppApi api, IAppApiUser user, PermanentLog permanentLog)
+        public PermanentLogGroup(AppApi api, IAppApiUser user, PermanentLogGroupActionFactory actionFactory)
             : base
             (
                 api,
@@ -19,13 +19,14 @@ namespace PermanentLogGroupApi
             )
         {
             var actions = Actions<WebAppApiActionCollection>();
-            LogBatch = actions.AddAction(nameof(LogBatch), () => new LogBatchAction(permanentLog));
-            StartSession = actions.AddAction(nameof(StartSession), () => new StartSessionAction(permanentLog));
-            StartRequest = actions.AddAction(nameof(StartRequest), () => new StartRequestAction(permanentLog));
-            EndRequest = actions.AddAction(nameof(EndRequest), () => new EndRequestAction(permanentLog));
-            EndSession = actions.AddAction(nameof(EndSession), () => new EndSessionAction(permanentLog));
-            LogEvent = actions.AddAction(nameof(LogEvent), () => new LogEventAction(permanentLog));
-            AuthenticateSession = actions.AddAction(nameof(AuthenticateSession), () => new AuthenticateSessionAction(permanentLog));
+            LogBatch = actions.AddAction(nameof(LogBatch), actionFactory.CreateLogBatch);
+            StartSession = actions.AddAction(nameof(StartSession), actionFactory.CreateStartSession);
+            StartRequest = actions.AddAction(nameof(StartRequest), actionFactory.CreateStartRequest);
+            EndRequest = actions.AddAction(nameof(EndRequest), actionFactory.CreateEndRequest);
+            EndSession = actions.AddAction(nameof(EndSession), actionFactory.CreateEndSession);
+            LogEvent = actions.AddAction(nameof(LogEvent), actionFactory.CreateLogEvent);
+            AuthenticateSession = actions.AddAction(nameof(AuthenticateSession), actionFactory.CreateAuthenticateSession);
+            EndExpiredSessions = actions.AddAction(nameof(EndExpiredSessions), actionFactory.CreateEndExpiredSessions);
         }
 
         public AppApiAction<LogBatchModel, EmptyActionResult> LogBatch { get; }
@@ -35,5 +36,6 @@ namespace PermanentLogGroupApi
         public AppApiAction<EndSessionModel, EmptyActionResult> EndSession { get; }
         public AppApiAction<LogEventModel, EmptyActionResult> LogEvent { get; }
         public AppApiAction<AuthenticateSessionModel, EmptyActionResult> AuthenticateSession { get; }
+        public AppApiAction<EmptyRequest, EmptyActionResult> EndExpiredSessions { get; }
     }
 }

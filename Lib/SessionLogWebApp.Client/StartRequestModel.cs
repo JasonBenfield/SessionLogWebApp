@@ -30,7 +30,7 @@ namespace SessionLogWebApp.Client
             set;
         }
 
-        public DateTime TimeStarted
+        public DateTimeOffset TimeStarted
         {
             get;
             set;

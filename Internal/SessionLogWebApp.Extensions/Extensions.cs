@@ -16,8 +16,8 @@ namespace SessionLogWebApp.Extensions
             services.AddWebAppServices(configuration);
             services.AddSingleton(sp => SessionLogAppKey.AppKey);
             services.AddScoped<PermanentLog>();
-            services.AddScoped<SessionLogAppApi>();
-            services.AddScoped<AppApi>(sp => sp.GetService<SessionLogAppApi>());
+            services.AddScoped<AppApiFactory, SessionLogAppApiFactory>();
+            services.AddScoped(sp => (SessionLogAppApi)sp.GetService<AppApi>());
             services
                 .AddMvc()
                 .AddJsonOptions(options =>

@@ -27,8 +27,13 @@ namespace SessionLogApiGeneratorApp
                     services.AddScoped<AppFactory>();
                     services.AddScoped<PermanentLog>();
                     services.AddScoped<IAppApiUser, AppApiSuperUser>();
-                    services.AddScoped<AppApi, SessionLogAppApi>();
-                    services.AddScoped<IAppApiTemplateFactory, SessionLogAppApiTemplateFactory>();
+                    services.AddScoped<AppApiFactory, SessionLogAppApiFactory>();
+                    services.AddScoped(sp =>
+                    {
+                        var factory = sp.GetService<AppApiFactory>();
+                        return (SessionLogAppApi)factory.CreateForSuperUser();
+                    });
+                    services.AddScoped<AppApi>(sp => sp.GetService<SessionLogAppApi>());
                     services.AddHostedService<ApiGeneratorHostedService>();
                 })
                 .RunConsoleAsync();

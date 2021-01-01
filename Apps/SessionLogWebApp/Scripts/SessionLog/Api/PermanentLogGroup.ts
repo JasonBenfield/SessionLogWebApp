@@ -16,6 +16,7 @@ export class PermanentLogGroup extends AppApiGroup {
 		this.EndSessionAction = this.createAction<IEndSessionModel,IEmptyActionResult>('EndSession', 'EndSession');
 		this.LogEventAction = this.createAction<ILogEventModel,IEmptyActionResult>('LogEvent', 'LogEvent');
 		this.AuthenticateSessionAction = this.createAction<IAuthenticateSessionModel,IEmptyActionResult>('AuthenticateSession', 'AuthenticateSession');
+		this.EndExpiredSessionsAction = this.createAction<IEmptyRequest,IEmptyActionResult>('EndExpiredSessions', 'EndExpiredSessions');
 	}
 
 	private readonly LogBatchAction: AppApiAction<ILogBatchModel,IEmptyActionResult>;
@@ -25,6 +26,7 @@ export class PermanentLogGroup extends AppApiGroup {
 	private readonly EndSessionAction: AppApiAction<IEndSessionModel,IEmptyActionResult>;
 	private readonly LogEventAction: AppApiAction<ILogEventModel,IEmptyActionResult>;
 	private readonly AuthenticateSessionAction: AppApiAction<IAuthenticateSessionModel,IEmptyActionResult>;
+	private readonly EndExpiredSessionsAction: AppApiAction<IEmptyRequest,IEmptyActionResult>;
 
 	LogBatch(model: ILogBatchModel, errorOptions?: IActionErrorOptions) {
 		return this.LogBatchAction.execute(model, errorOptions || {});
@@ -46,5 +48,8 @@ export class PermanentLogGroup extends AppApiGroup {
 	}
 	AuthenticateSession(model: IAuthenticateSessionModel, errorOptions?: IActionErrorOptions) {
 		return this.AuthenticateSessionAction.execute(model, errorOptions || {});
+	}
+	EndExpiredSessions(errorOptions?: IActionErrorOptions) {
+		return this.EndExpiredSessionsAction.execute({}, errorOptions || {});
 	}
 }

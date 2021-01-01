@@ -60,5 +60,11 @@ namespace SessionLogWebApp.ApiControllers
         {
             return api.Group("PermanentLog").Action<AuthenticateSessionModel, EmptyActionResult>("AuthenticateSession").Execute(model);
         }
+
+        [HttpPost]
+        public Task<ResultContainer<EmptyActionResult>> EndExpiredSessions()
+        {
+            return api.Group("PermanentLog").Action<EmptyRequest, EmptyActionResult>("EndExpiredSessions").Execute(new EmptyRequest());
+        }
     }
 }

@@ -9,13 +9,13 @@ namespace SessionLogWebApp.Api
     {
         private readonly AppFactory appFactory;
         private readonly Clock clock;
-        private readonly SessionLogAppApiTemplateFactory templateFactory;
+        private readonly AppApiFactory apiFactory;
 
-        public SessionLogSetup(AppFactory appFactory, Clock clock, SessionLogAppApiTemplateFactory templateFactory)
+        public SessionLogSetup(AppFactory appFactory, Clock clock, AppApiFactory apiFactory)
         {
             this.appFactory = appFactory;
             this.clock = clock;
-            this.templateFactory = templateFactory;
+            this.apiFactory = apiFactory;
         }
 
         public async Task Run()
@@ -25,7 +25,7 @@ namespace SessionLogWebApp.Api
             (
                 appFactory,
                 clock,
-                templateFactory.Create(),
+                apiFactory.CreateTemplate(),
                 "Session Log"
             ).Run();
         }

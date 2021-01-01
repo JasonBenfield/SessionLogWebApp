@@ -52,3 +52,5 @@ interface IEndSessionModel {
 }
 interface IEmptyActionResult {
 }
+interface IEmptyRequest {
+}
