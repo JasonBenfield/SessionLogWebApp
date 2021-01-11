@@ -25,3 +25,8 @@ export declare class First<T> {
     private readonly source;
     value(): T;
 }
+export declare class Any<T> {
+    constructor(source: T[] | IEnumerable<T>);
+    private readonly source;
+    value(): boolean;
+}

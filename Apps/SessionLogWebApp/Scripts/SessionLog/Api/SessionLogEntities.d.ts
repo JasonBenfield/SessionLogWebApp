@@ -3,9 +3,6 @@
 interface IUserStartRequest {
 	ReturnUrl: string;
 }
-interface IAppActionViewResult {
-	ViewName: string;
-}
 interface ILogBatchModel {
 	StartSessions: IStartSessionModel[];
 	StartRequests: IStartRequestModel[];

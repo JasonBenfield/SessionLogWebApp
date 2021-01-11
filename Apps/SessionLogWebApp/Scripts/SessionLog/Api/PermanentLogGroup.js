@@ -8,14 +8,14 @@ var PermanentLogGroup = /** @class */ (function (_super) {
     tslib_1.__extends(PermanentLogGroup, _super);
     function PermanentLogGroup(events, resourceUrl) {
         var _this = _super.call(this, events, resourceUrl, 'PermanentLog') || this;
-        _this.LogBatchAction = _this.createAction('LogBatch', 'LogBatch');
-        _this.StartSessionAction = _this.createAction('StartSession', 'StartSession');
-        _this.StartRequestAction = _this.createAction('StartRequest', 'StartRequest');
-        _this.EndRequestAction = _this.createAction('EndRequest', 'EndRequest');
-        _this.EndSessionAction = _this.createAction('EndSession', 'EndSession');
-        _this.LogEventAction = _this.createAction('LogEvent', 'LogEvent');
-        _this.AuthenticateSessionAction = _this.createAction('AuthenticateSession', 'AuthenticateSession');
-        _this.EndExpiredSessionsAction = _this.createAction('EndExpiredSessions', 'EndExpiredSessions');
+        _this.LogBatchAction = _this.createAction('LogBatch', 'Log Batch');
+        _this.StartSessionAction = _this.createAction('StartSession', 'Start Session');
+        _this.StartRequestAction = _this.createAction('StartRequest', 'Start Request');
+        _this.EndRequestAction = _this.createAction('EndRequest', 'End Request');
+        _this.EndSessionAction = _this.createAction('EndSession', 'End Session');
+        _this.LogEventAction = _this.createAction('LogEvent', 'Log Event');
+        _this.AuthenticateSessionAction = _this.createAction('AuthenticateSession', 'Authenticate Session');
+        _this.EndExpiredSessionsAction = _this.createAction('EndExpiredSessions', 'End Expired Sessions');
         return _this;
     }
     PermanentLogGroup.prototype.LogBatch = function (model, errorOptions) {

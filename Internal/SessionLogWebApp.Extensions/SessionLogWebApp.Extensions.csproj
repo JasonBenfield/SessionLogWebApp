@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
-    <PackageReference Include="XTI_WebApp.Extensions" Version="1.6.4-dev210101114604424" />
+    <PackageReference Include="XTI_WebApp.Extensions" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>

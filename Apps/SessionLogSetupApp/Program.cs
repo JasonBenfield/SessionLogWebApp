@@ -22,6 +22,7 @@ namespace SessionLogSetupApp
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddAppDbContextForSqlServer(hostContext.Configuration);
+                    services.AddSingleton(_ => SessionLogAppKey.AppKey);
                     services.AddScoped<AppFactory>();
                     services.AddSingleton<Clock, UtcClock>();
                     services.AddScoped<AppApiFactory, SessionLogAppApiFactory>();

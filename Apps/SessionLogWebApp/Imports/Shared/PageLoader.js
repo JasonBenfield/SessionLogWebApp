@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ko = require("knockout");
 var template = require("./Templates/PageFrame.html");
 require("./Styles/default.scss");
-require("../../node_modules/@fortawesome/fontawesome-free/css/all.css");
+require("@fortawesome/fontawesome-free/css/all.css");
 require("@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot");
 require("@fortawesome/fontawesome-free/webfonts/fa-brands-400.svg");
 require("@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf");
@@ -29,6 +29,7 @@ var UrlBuilder_1 = require("./UrlBuilder");
 var ConsoleLog_1 = require("./ConsoleLog");
 var bootstrap_1 = require("bootstrap");
 var DropdownBindingHandler_1 = require("./DropdownBindingHandler");
+var DelegatedEventBindingHandler_1 = require("./DelegatedEventBindingHandler");
 var PageLoader = /** @class */ (function () {
     function PageLoader() {
     }
@@ -76,6 +77,7 @@ var PageLoader = /** @class */ (function () {
         ko.bindingHandlers.submit = new SubmitBindingHandler_1.SubmitBindingHandler();
         ko.bindingHandlers.modal = new ModalBindingHandler_1.ModalBindingHandler();
         ko.bindingHandlers.dropdown = new DropdownBindingHandler_1.DropdownBindingHandler();
+        ko.bindingHandlers.delegatedEvent = new DelegatedEventBindingHandler_1.DelegatedEventBindingHandler();
         var page = tsyringe_1.container.resolve('Page');
         var pageFrameVM = tsyringe_1.container.resolve(PageFrameViewModel_1.PageFrameViewModel);
         ko.applyBindings(pageFrameVM);

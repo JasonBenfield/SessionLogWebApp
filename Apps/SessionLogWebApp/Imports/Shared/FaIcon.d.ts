@@ -16,11 +16,12 @@ export declare class FaIconNames {
 }
 export declare class FaIcon {
     private readonly vm;
-    private readonly name;
-    private readonly prefix;
+    private name;
+    private prefix;
     constructor(vm: FaIconViewModel, name: string, prefix?: FaIconPrefix);
     private prefixCss;
     private readonly cssClass;
-    changeName(name: string): void;
-    updateVmCssClass(): void;
+    setPrefix(prefix: FaIconPrefix): void;
+    setName(name: string): void;
+    private updateVmCssClass;
 }

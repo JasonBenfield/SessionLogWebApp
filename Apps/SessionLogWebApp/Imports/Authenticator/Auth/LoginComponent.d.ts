@@ -6,17 +6,15 @@ export declare class LoginResult {
 }
 export declare class LoginComponent {
     private readonly vm;
-    private readonly authenticator;
-    constructor(vm: LoginComponentViewModel, authenticator: AuthenticatorAppApi);
+    private readonly authApi;
+    constructor(vm: LoginComponentViewModel, authApi: AuthenticatorAppApi);
     private readonly awaitable;
     private readonly alert;
-    private readonly userName;
-    private readonly password;
+    private readonly verifyLoginForm;
     private readonly loginCommand;
     start(): Promise<LoginResult>;
     private login;
     private getCredentials;
-    private verifyLogin;
     private postLogin;
     private createInput;
 }

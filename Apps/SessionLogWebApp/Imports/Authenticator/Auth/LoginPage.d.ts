@@ -1,2 +1,2 @@
-/// <reference types="api/authenticatorentities" />
+/// <reference types="scripts/authenticator/api/authenticatorentities" />
 import 'reflect-metadata';

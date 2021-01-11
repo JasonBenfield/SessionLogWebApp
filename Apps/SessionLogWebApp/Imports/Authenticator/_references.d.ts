@@ -1,2 +1,2 @@
-/// <reference path="../../imports/shared/index.d.ts" />
-/// <reference types="api/authenticatorentities" />
+/// <reference types="scripts/authenticator/api/authenticatorentities" />
+/// <reference types="imports/shared" />

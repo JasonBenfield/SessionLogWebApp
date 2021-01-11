@@ -13,6 +13,7 @@ namespace SessionLogWebApp.Api
                 SessionLogAppKey.AppKey,
                 user,
                 ResourceAccess.AllowAuthenticated()
+                    .WithAllowed(SessionLogRoleNames.Instance.Admin)
             )
         {
             PermanentLog = AddGroup(u => new PermanentLogGroup(this, u, new PermanentLogGroupActionFactory(services)));

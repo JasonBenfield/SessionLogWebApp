@@ -1,5 +1,5 @@
 import './Styles/default.scss';
-import "../../node_modules/@fortawesome/fontawesome-free/css/all.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot";
 import "@fortawesome/fontawesome-free/webfonts/fa-brands-400.svg";
 import "@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf";

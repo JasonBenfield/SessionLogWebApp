@@ -144,6 +144,15 @@ function SessionLog-Publish {
     }
 }
 
+function SessionLog-PublishWebApp {
+    param(
+        [ValidateSet("Production", "Development", "Staging", "Test")]
+        [string] $EnvName="Development",
+        [switch] $ExcludePackage
+    )
+    $script:sessionLogConfig | Xti-PublishWebApp -EnvName $EnvName
+}
+
 function SessionLog-GenerateApi {
     param (
         [ValidateSet("Development", "Production", "Staging", "Test")]
