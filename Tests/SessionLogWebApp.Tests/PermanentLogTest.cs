@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
+using PermanentLogGroupApi;
 using SessionLogWebApp.Api;
 using System;
 using System.Linq;
@@ -10,7 +11,6 @@ using XTI_App.Api;
 using XTI_App.Fakes;
 using XTI_Core;
 using XTI_Core.Fakes;
-using XTI_PermanentLog;
 using XTI_TempLog;
 using XTI_TempLog.Fakes;
 using XTI_WebApp.Fakes;
@@ -25,7 +25,7 @@ namespace SessionLogWebApp.Tests
             var input = await setup();
             var sessionKey = generateKey();
             await startSession(input, sessionKey);
-            var session = await input.SessionFactory.Sessions().Session(sessionKey);
+            var session = await input.AppFactory.Sessions().Session(sessionKey);
             Assert.That(session.HasStarted(), Is.True, "Should start session on permanent log");
             Assert.That(session.HasEnded(), Is.False, "Should start session on permanent log");
         }
@@ -38,7 +38,7 @@ namespace SessionLogWebApp.Tests
             await startSession(input, sessionKey);
             var requestKey = generateKey();
             await startRequest(input, sessionKey, requestKey);
-            var session = await input.SessionFactory.Sessions().Session(sessionKey);
+            var session = await input.AppFactory.Sessions().Session(sessionKey);
             var requests = (await session.Requests()).ToArray();
             Assert.That(requests.Length, Is.EqualTo(1), "Should start request on permanent log");
         }
@@ -52,7 +52,7 @@ namespace SessionLogWebApp.Tests
             var requestKey = generateKey();
             await startRequest(input, sessionKey, requestKey);
             await endRequest(input, requestKey);
-            var session = await input.SessionFactory.Sessions().Session(sessionKey);
+            var session = await input.AppFactory.Sessions().Session(sessionKey);
             var requests = (await session.Requests()).ToArray();
             Assert.That(requests[0].HasEnded(), Is.True, "Should end request on permanent log");
         }
@@ -67,7 +67,7 @@ namespace SessionLogWebApp.Tests
             await startRequest(input, sessionKey, requestKey);
             await endRequest(input, requestKey);
             await endSession(input, sessionKey);
-            var session = await input.SessionFactory.Sessions().Session(sessionKey);
+            var session = await input.AppFactory.Sessions().Session(sessionKey);
             Assert.That(session.HasEnded(), Is.True, "Should end session on permanent log");
         }
 
@@ -78,7 +78,7 @@ namespace SessionLogWebApp.Tests
             var sessionKey = generateKey();
             await startSession(input, sessionKey);
             await authenticateSession(input, sessionKey);
-            var session = await input.SessionFactory.Sessions().Session(sessionKey);
+            var session = await input.AppFactory.Sessions().Session(sessionKey);
             var user = await input.AppFactory.Users().User(session.UserID);
             Assert.That(user.UserName, Is.EqualTo("someone"), "Should authenticate session on permanent log");
         }
@@ -101,7 +101,7 @@ namespace SessionLogWebApp.Tests
                 exception = ex;
             }
             await logEvent(input, requestKey, exception);
-            var session = await input.SessionFactory.Sessions().Session(sessionKey);
+            var session = await input.AppFactory.Sessions().Session(sessionKey);
             var requests = (await session.Requests()).ToArray();
             var events = (await requests[0].Events()).ToArray();
             Assert.That(events.Length, Is.EqualTo(1), "Should log event on permanent log");
@@ -199,18 +199,8 @@ namespace SessionLogWebApp.Tests
                         services.AddScoped<IAppApiUser, AppApiSuperUser>();
                         services.AddSingleton<IAppEnvironmentContext, FakeAppEnvironmentContext>();
                         services.AddSingleton(sp => SessionLogAppKey.AppKey);
-                        services.AddScoped<SessionFactory>();
                         services.AddScoped<PermanentLog>();
-                        services.AddScoped(sp =>
-                        {
-                            var appKey = sp.GetService<AppKey>();
-                            var versionKey = AppVersionKey.Current;
-                            var user = sp.GetService<IAppApiUser>();
-                            var appFactory = sp.GetService<AppFactory>();
-                            var clock = sp.GetService<Clock>();
-                            var permanentLog = sp.GetService<PermanentLog>();
-                            return new SessionLogAppApi(appKey, versionKey, user, permanentLog);
-                        });
+                        services.AddScoped<SessionLogAppApi>();
                     }
                 )
                 .Build();
@@ -243,13 +233,11 @@ namespace SessionLogWebApp.Tests
             {
                 Clock = (FakeClock)sp.GetService<Clock>();
                 Api = sp.GetService<SessionLogAppApi>();
-                SessionFactory = sp.GetService<SessionFactory>();
                 AppFactory = sp.GetService<AppFactory>();
             }
 
             public FakeClock Clock { get; }
             public SessionLogAppApi Api { get; }
-            public SessionFactory SessionFactory { get; }
             public AppFactory AppFactory { get; }
         }
     }

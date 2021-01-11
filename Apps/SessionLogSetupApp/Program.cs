@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using SessionLogWebApp.Api;
 using System.Threading.Tasks;
 using XTI_App;
+using XTI_App.Api;
 using XTI_Configuration.Extensions;
 using XTI_Core;
 
@@ -21,8 +22,10 @@ namespace SessionLogSetupApp
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddAppDbContextForSqlServer(hostContext.Configuration);
+                    services.AddSingleton(_ => SessionLogAppKey.AppKey);
                     services.AddScoped<AppFactory>();
                     services.AddSingleton<Clock, UtcClock>();
+                    services.AddScoped<AppApiFactory, SessionLogAppApiFactory>();
                     services.AddScoped<SessionLogSetup>();
                     services.AddHostedService<HostedService>();
                 })

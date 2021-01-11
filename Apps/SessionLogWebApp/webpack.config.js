@@ -1,8 +1,8 @@
 ﻿const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const entry = {
-    user: './Scripts/Shared/User/UserPage.ts',
-    home: './Scripts/SessionLog/Home/MainPage.ts'
+    user: './Imports/Shared/User/UserPage.js',
+    home: './Scripts/Internal/Home/MainPage.ts'
 };
 const exportModule = {
     rules: [
@@ -14,9 +14,29 @@ const exportModule = {
         {
             test: /\.s[ac]ss$/i,
             use: [
-                'style-loader',
-                'css-loader',
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: '../../styles/css/[name].css',
+                    },
+                },
                 'sass-loader',
+            ]
+        },
+        {
+            test: /\.css$/i,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: (resourcePath, resourceQuery) => {
+                            if (/@fortawesome[\\\/]fontawesome-free/.test(resourcePath)) {
+                                return '../../styles/css/fontawesome/[name].css';
+                            }
+                            return '../../styles/css/[name].css';
+                        }
+                    }
+                }
             ]
         },
         {
@@ -29,19 +49,29 @@ const exportModule = {
                     }
                 }
             }]
+        },
+        {
+            test: /\.(svg|eot|woff|woff2|ttf)$/,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: '../../styles/css/webfonts'
+                }
+            }]
         }
     ]
 };
 const outputFilename = '[name].js';
 const resolve = {
     alias: {
-        xtistart: path.resolve(__dirname, 'Scripts/SessionLog/Startup.js')
+        xtistart: path.resolve(__dirname, 'Scripts/Internal/Startup.js'),
+        XtiShared: path.resolve(__dirname, 'Imports/Shared/'),
+        XtiAuthenticator: path.resolve(__dirname, 'Imports/Authenticator/')
     }
 };
 const plugins = [
     new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
         filename: '[name].css',
         chunkFilename: '[id].css',
     })

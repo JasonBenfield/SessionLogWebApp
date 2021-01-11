@@ -3,18 +3,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PermanentLogGroup = void 0;
 var tslib_1 = require("tslib");
-var AppApiGroup_1 = require("../../Shared/AppApiGroup");
+var AppApiGroup_1 = require("XtiShared/AppApiGroup");
 var PermanentLogGroup = /** @class */ (function (_super) {
     tslib_1.__extends(PermanentLogGroup, _super);
     function PermanentLogGroup(events, resourceUrl) {
         var _this = _super.call(this, events, resourceUrl, 'PermanentLog') || this;
-        _this.LogBatchAction = _this.createAction('LogBatch', 'LogBatch');
-        _this.StartSessionAction = _this.createAction('StartSession', 'StartSession');
-        _this.StartRequestAction = _this.createAction('StartRequest', 'StartRequest');
-        _this.EndRequestAction = _this.createAction('EndRequest', 'EndRequest');
-        _this.EndSessionAction = _this.createAction('EndSession', 'EndSession');
-        _this.LogEventAction = _this.createAction('LogEvent', 'LogEvent');
-        _this.AuthenticateSessionAction = _this.createAction('AuthenticateSession', 'AuthenticateSession');
+        _this.LogBatchAction = _this.createAction('LogBatch', 'Log Batch');
+        _this.StartSessionAction = _this.createAction('StartSession', 'Start Session');
+        _this.StartRequestAction = _this.createAction('StartRequest', 'Start Request');
+        _this.EndRequestAction = _this.createAction('EndRequest', 'End Request');
+        _this.EndSessionAction = _this.createAction('EndSession', 'End Session');
+        _this.LogEventAction = _this.createAction('LogEvent', 'Log Event');
+        _this.AuthenticateSessionAction = _this.createAction('AuthenticateSession', 'Authenticate Session');
+        _this.EndExpiredSessionsAction = _this.createAction('EndExpiredSessions', 'End Expired Sessions');
         return _this;
     }
     PermanentLogGroup.prototype.LogBatch = function (model, errorOptions) {
@@ -37,6 +38,9 @@ var PermanentLogGroup = /** @class */ (function (_super) {
     };
     PermanentLogGroup.prototype.AuthenticateSession = function (model, errorOptions) {
         return this.AuthenticateSessionAction.execute(model, errorOptions || {});
+    };
+    PermanentLogGroup.prototype.EndExpiredSessions = function (errorOptions) {
+        return this.EndExpiredSessionsAction.execute({}, errorOptions || {});
     };
     return PermanentLogGroup;
 }(AppApiGroup_1.AppApiGroup));

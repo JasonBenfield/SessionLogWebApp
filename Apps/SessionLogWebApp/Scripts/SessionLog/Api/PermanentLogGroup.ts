@@ -1,31 +1,33 @@
 // Generated code
 
-import { AppApiGroup } from "../../Shared/AppApiGroup";
-import { AppApiAction } from "../../Shared/AppApiAction";
-import { AppApiView } from "../../Shared/AppApiView";
-import { AppApiEvents } from "../../Shared/AppApiEvents";
-import { AppResourceUrl } from "../../Shared/AppResourceUrl";
+import { AppApiGroup } from "XtiShared/AppApiGroup";
+import { AppApiAction } from "XtiShared/AppApiAction";
+import { AppApiView } from "XtiShared/AppApiView";
+import { AppApiEvents } from "XtiShared/AppApiEvents";
+import { AppResourceUrl } from "XtiShared/AppResourceUrl";
 
 export class PermanentLogGroup extends AppApiGroup {
 	constructor(events: AppApiEvents, resourceUrl: AppResourceUrl) {
 		super(events, resourceUrl, 'PermanentLog');
-		this.LogBatchAction = this.createAction<ILogBatchModel,IEmptyActionResult>('LogBatch', 'LogBatch');
-		this.StartSessionAction = this.createAction<IStartSessionModel,IEmptyActionResult>('StartSession', 'StartSession');
-		this.StartRequestAction = this.createAction<IStartRequestModel,IEmptyActionResult>('StartRequest', 'StartRequest');
-		this.EndRequestAction = this.createAction<IEndRequestModel,IEmptyActionResult>('EndRequest', 'EndRequest');
-		this.EndSessionAction = this.createAction<IEndSessionModel,IEmptyActionResult>('EndSession', 'EndSession');
-		this.LogEventAction = this.createAction<ILogEventModel,IEmptyActionResult>('LogEvent', 'LogEvent');
-		this.AuthenticateSessionAction = this.createAction<IAuthenticateSessionModel,IEmptyActionResult>('AuthenticateSession', 'AuthenticateSession');
+		this.LogBatchAction = this.createAction<ILogBatchModel,IEmptyActionResult>('LogBatch', 'Log Batch');
+		this.StartSessionAction = this.createAction<IStartSessionModel,IEmptyActionResult>('StartSession', 'Start Session');
+		this.StartRequestAction = this.createAction<IStartRequestModel,IEmptyActionResult>('StartRequest', 'Start Request');
+		this.EndRequestAction = this.createAction<IEndRequestModel,IEmptyActionResult>('EndRequest', 'End Request');
+		this.EndSessionAction = this.createAction<IEndSessionModel,IEmptyActionResult>('EndSession', 'End Session');
+		this.LogEventAction = this.createAction<ILogEventModel,IEmptyActionResult>('LogEvent', 'Log Event');
+		this.AuthenticateSessionAction = this.createAction<IAuthenticateSessionModel,IEmptyActionResult>('AuthenticateSession', 'Authenticate Session');
+		this.EndExpiredSessionsAction = this.createAction<IEmptyRequest,IEmptyActionResult>('EndExpiredSessions', 'End Expired Sessions');
 	}
-
-	private readonly LogBatchAction: AppApiAction<ILogBatchModel,IEmptyActionResult>;
-	private readonly StartSessionAction: AppApiAction<IStartSessionModel,IEmptyActionResult>;
-	private readonly StartRequestAction: AppApiAction<IStartRequestModel,IEmptyActionResult>;
-	private readonly EndRequestAction: AppApiAction<IEndRequestModel,IEmptyActionResult>;
-	private readonly EndSessionAction: AppApiAction<IEndSessionModel,IEmptyActionResult>;
-	private readonly LogEventAction: AppApiAction<ILogEventModel,IEmptyActionResult>;
-	private readonly AuthenticateSessionAction: AppApiAction<IAuthenticateSessionModel,IEmptyActionResult>;
-
+	
+	readonly LogBatchAction: AppApiAction<ILogBatchModel,IEmptyActionResult>;
+	readonly StartSessionAction: AppApiAction<IStartSessionModel,IEmptyActionResult>;
+	readonly StartRequestAction: AppApiAction<IStartRequestModel,IEmptyActionResult>;
+	readonly EndRequestAction: AppApiAction<IEndRequestModel,IEmptyActionResult>;
+	readonly EndSessionAction: AppApiAction<IEndSessionModel,IEmptyActionResult>;
+	readonly LogEventAction: AppApiAction<ILogEventModel,IEmptyActionResult>;
+	readonly AuthenticateSessionAction: AppApiAction<IAuthenticateSessionModel,IEmptyActionResult>;
+	readonly EndExpiredSessionsAction: AppApiAction<IEmptyRequest,IEmptyActionResult>;
+	
 	LogBatch(model: ILogBatchModel, errorOptions?: IActionErrorOptions) {
 		return this.LogBatchAction.execute(model, errorOptions || {});
 	}
@@ -46,5 +48,8 @@ export class PermanentLogGroup extends AppApiGroup {
 	}
 	AuthenticateSession(model: IAuthenticateSessionModel, errorOptions?: IActionErrorOptions) {
 		return this.AuthenticateSessionAction.execute(model, errorOptions || {});
+	}
+	EndExpiredSessions(errorOptions?: IActionErrorOptions) {
+		return this.EndExpiredSessionsAction.execute({}, errorOptions || {});
 	}
 }

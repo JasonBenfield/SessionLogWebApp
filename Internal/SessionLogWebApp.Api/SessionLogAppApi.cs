@@ -1,22 +1,22 @@
 ﻿using PermanentLogGroupApi;
-using XTI_App;
+using System;
 using XTI_App.Api;
-using XTI_PermanentLog;
+using XTI_WebApp.Api;
 
 namespace SessionLogWebApp.Api
 {
-    public sealed class SessionLogAppApi : AppApi
+    public sealed class SessionLogAppApi : WebAppApi
     {
-        public SessionLogAppApi(AppKey appKey, AppVersionKey versionKey, IAppApiUser user, PermanentLog permanentLog)
+        public SessionLogAppApi(IAppApiUser user, IServiceProvider services)
             : base
             (
-                appKey,
-                versionKey,
+                SessionLogAppKey.AppKey,
                 user,
                 ResourceAccess.AllowAuthenticated()
+                    .WithAllowed(SessionLogRoleNames.Instance.Admin)
             )
         {
-            PermanentLog = AddGroup(u => new PermanentLogGroup(this, u, permanentLog));
+            PermanentLog = AddGroup(u => new PermanentLogGroup(this, u, new PermanentLogGroupActionFactory(services)));
         }
 
         public PermanentLogGroup PermanentLog { get; }
