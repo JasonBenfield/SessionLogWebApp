@@ -7,7 +7,7 @@ import { PermanentLogGroup } from "./PermanentLogGroup";
 
 
 export class SessionLogAppApi extends AppApi {
-	public static readonly DefaultVersion = 'V1160';
+	public static readonly DefaultVersion = 'V1167';
 	
 	constructor(events: AppApiEvents, baseUrl: string, version: string = '') {
 		super(events, baseUrl, 'SessionLog', version || SessionLogAppApi.DefaultVersion);

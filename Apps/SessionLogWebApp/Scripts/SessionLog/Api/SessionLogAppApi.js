@@ -15,7 +15,7 @@ var SessionLogAppApi = /** @class */ (function (_super) {
         _this.PermanentLog = _this.addGroup(function (evts, resourceUrl) { return new PermanentLogGroup_1.PermanentLogGroup(evts, resourceUrl); });
         return _this;
     }
-    SessionLogAppApi.DefaultVersion = 'V1160';
+    SessionLogAppApi.DefaultVersion = 'V1167';
     return SessionLogAppApi;
 }(AppApi_1.AppApi));
 exports.SessionLogAppApi = SessionLogAppApi;
