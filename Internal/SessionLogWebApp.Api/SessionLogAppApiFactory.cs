@@ -12,6 +12,6 @@ namespace SessionLogWebApp.Api
             this.sp = sp;
         }
 
-        protected override AppApi _Create(IAppApiUser user)=> new SessionLogAppApi(user, sp);
+        protected override IAppApi _Create(IAppApiUser user) => new SessionLogAppApi(user, sp);
     }
 }

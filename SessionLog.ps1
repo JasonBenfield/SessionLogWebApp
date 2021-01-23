@@ -159,7 +159,15 @@ function SessionLog-GenerateApi {
         [string] $EnvName,
         [string] $DefaultVersion
     )
+    dotnet build Apps/SessionLogApiGeneratorApp
+    if( $LASTEXITCODE -ne 0 ) {
+        Throw "Session Log api generator build failed with exit code $LASTEXITCODE"
+    }
     dotnet run --project Apps/SessionLogApiGeneratorApp --envrionment $EnvName --Output:DefaultVersion "`"$DefaultVersion`""
+    if( $LASTEXITCODE -ne 0 ) {
+        Throw "Session Log api generator failed with exit code $LASTEXITCODE"
+    }
+    tsc -p Apps/SessionLogWebApp/Scripts/SessionLog/tsconfig.json
 }
 
 function SessionLog-Setup {
@@ -168,6 +176,10 @@ function SessionLog-Setup {
         [string] $EnvName="Development"
     )
     
+    dotnet build Apps/SessionLogSetupApp
+    if( $LASTEXITCODE -ne 0 ) {
+        Throw "SessionLog setup build failed with exit code $LASTEXITCODE"
+    }
     dotnet run --environment=$EnvName --project=Apps/SessionLogSetupApp
 
     if( $LASTEXITCODE -ne 0 ) {
