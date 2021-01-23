@@ -71,26 +71,25 @@ function SessionLog-Publish {
     
     $ErrorActionPreference = "Stop"
 
-    $activity = "Publishing to $EnvName"
-    
+    Write-Output "Publishing to $($EnvName)"
     $timestamp = Get-Date -Format "yyMMdd_HHmmssfff"
     $backupFilePath = "$($env:XTI_AppData)\$EnvName\Backups\app_$timestamp.bak"
     if($EnvName -eq "Production" -or $EnvName -eq "Staging") {
-        Write-Progress -Activity $activity -Status "Backuping up the app database" -PercentComplete 10
+        Write-Output "Backuping up the app database"
 	    Xti-BackupMainDb -envName "Production" -BackupFilePath $backupFilePath
         $env:DOTNET_ENVIRONMENT=$EnvName
         $env:ASPNETCORE_ENVIRONMENT=$EnvName
     }
     if($EnvName -eq "Staging") { 
-        Write-Progress -Activity $activity -Status "Restoring the app database" -PercentComplete 15
+        Write-Output "Restoring the app database"
 	    Xti-RestoreMainDb -EnvName $EnvName -BackupFilePath $backupFilePath
     }
 
-    Write-Progress -Activity $activity -Status "Updating the app database" -PercentComplete 18
+    Write-Output "Updating the app database"
     Xti-UpdateMainDb -EnvName $EnvName
 
     if ($EnvName -eq "Test"){
-        Write-Progress -Activity $activity -Status "Resetting the app database" -PercentComplete 20
+        Write-Output "Resetting the app database"
 	    Xti-ResetMainDb -EnvName $EnvName
     }
     if($EnvName -eq "Production") {
@@ -108,27 +107,27 @@ function SessionLog-Publish {
         $defaultVersion = $releaseBranch.VersionKey
     }
     
-    Write-Progress -Activity $activity -Status "Generating the api" -PercentComplete 30
+    Write-Output "Generating the api"
     SessionLog-GenerateApi -EnvName $EnvName -DefaultVersion $defaultVersion
 
-    Write-Progress -Activity $activity -Status "Running web pack" -PercentComplete 40
+    Write-Output "Running web pack"
     $script:sessionLogConfig | SessionLog-Webpack
 
-    Write-Progress -Activity $activity -Status "Building solution" -PercentComplete 50
+    Write-Output "Building solution"
     dotnet build 
 
     SessionLog-Setup -EnvName $EnvName
 
     if ($EnvName -eq "Test") {
         Invoke-WebRequest -Uri https://test.guinevere.com/Authenticator/Current/StopApp
-        Write-Progress -Activity $activity -Status "Creating user" -PercentComplete 70
+        Write-Output "Creating user"
         $password = Xti-GeneratePassword
         New-XtiUser -EnvName $EnvName -UserName SessionLogAdmin -Password $password
         $script:sessionLogConfig | New-XtiUserRoles -EnvName $EnvName -UserName SessionLogAdmin -RoleNames Admin
         New-XtiCredentials -EnvName $EnvName -CredentialKey SessionLogAdmin -UserName SessionLogAdmin -Password $password
     }
 
-    Write-Progress -Activity $activity -Status "Publishing website" -PercentComplete 80
+    Write-Output "Publishing website"
     
     $script:sessionLogConfig | Xti-PublishWebApp -EnvName $EnvName
 
