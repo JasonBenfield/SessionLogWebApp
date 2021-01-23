@@ -31,9 +31,9 @@ namespace SessionLogApiGeneratorApp
                     services.AddScoped(sp =>
                     {
                         var factory = sp.GetService<AppApiFactory>();
-                        return (SessionLogAppApi)factory.CreateForSuperUser();
+                        return factory.CreateForSuperUser();
                     });
-                    services.AddScoped<AppApi>(sp => sp.GetService<SessionLogAppApi>());
+                    services.AddScoped(sp => (SessionLogAppApi)sp.GetService<IAppApi>());
                     services.AddHostedService<ApiGeneratorHostedService>();
                 })
                 .RunConsoleAsync();

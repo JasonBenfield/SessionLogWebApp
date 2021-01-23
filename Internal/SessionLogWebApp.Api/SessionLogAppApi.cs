@@ -5,18 +5,25 @@ using XTI_WebApp.Api;
 
 namespace SessionLogWebApp.Api
 {
-    public sealed class SessionLogAppApi : WebAppApi
+    public sealed class SessionLogAppApi : WebAppApiWrapper
     {
         public SessionLogAppApi(IAppApiUser user, IServiceProvider services)
             : base
             (
-                SessionLogAppKey.AppKey,
-                user,
-                ResourceAccess.AllowAuthenticated()
-                    .WithAllowed(SessionLogRoleNames.Instance.Admin)
+                new AppApi
+                (
+                    SessionLogAppKey.AppKey,
+                    user,
+                    ResourceAccess.AllowAuthenticated()
+                        .WithAllowed(SessionLogRoleNames.Instance.Admin)
+                )
             )
         {
-            PermanentLog = AddGroup(u => new PermanentLogGroup(this, u, new PermanentLogGroupActionFactory(services)));
+            PermanentLog = new PermanentLogGroup
+            (
+                source.AddGroup(nameof(PermanentLog)),
+                new PermanentLogGroupActionFactory(services)
+            );
         }
 
         public PermanentLogGroup PermanentLog { get; }

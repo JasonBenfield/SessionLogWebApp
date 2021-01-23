@@ -7,12 +7,13 @@ export declare class LoginResult {
 export declare class LoginComponent {
     private readonly vm;
     private readonly authApi;
+    static readonly ResultKeys: {
+        loginComplete: string;
+    };
     constructor(vm: LoginComponentViewModel, authApi: AuthenticatorAppApi);
-    private readonly awaitable;
     private readonly alert;
     private readonly verifyLoginForm;
     private readonly loginCommand;
-    start(): Promise<LoginResult>;
     private login;
     private getCredentials;
     private postLogin;
